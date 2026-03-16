@@ -1,17 +1,17 @@
 import { ConfigService } from "@nestjs/config"
-import type {TypeOrmModuleOptions} from "@nestjs/typeorm"
+import { TypeOrmModuleOptions } from "@nestjs/typeorm"
 
-export const typeOrmConfig = (configService: ConfigService) : TypeOrmModuleOptions => ({
-    type: 'mssql',
-    host: configService.get('SQLServer_HOST'),
-    port: +configService.get('SQLServer_PORT'),
-    username: configService.get('SQLServer_USER'),
-    password: configService.get('SQLServer_PASSWORD'),
-    database: configService.get('SQLServer_DB'),
-    options: {
-        trustServerCertificate: configService.get<boolean>('SQLSerSQLServer_TRUST_CERTver_DB'),
-        encrypt: false,
-    },
-    synchronize: false,
-    autoLoadEntities: true,
+export const typeOrmConfig = (configService: ConfigService): TypeOrmModuleOptions => ({
+  type: 'mysql',
+  host: configService.get('MYSQL_HOST'),
+  port: configService.get<number>('MYSQL_PORT'),
+  username: configService.get('MYSQL_USER'),
+  password: configService.get('MYSQL_PASSWORD'),
+  database: configService.get('MYSQL_DB'),
+
+  synchronize: false,
+  autoLoadEntities: true,
+
+  charset: 'utf8mb4',
+  timezone: 'Z'
 })

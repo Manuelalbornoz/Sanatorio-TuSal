@@ -1,0 +1,70 @@
+CREATE DATABASE SanatorioTuSal;
+USE SanatorioTuSal;
+
+CREATE TABLE Usuario (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Apellido VARCHAR(100) NOT NULL,
+    Email VARCHAR(150) UNIQUE NOT NULL,
+    PasswordHash VARCHAR(255) NOT NULL,
+    Rol VARCHAR(50),
+    Especialidad VARCHAR(100),
+    Telefono VARCHAR(30),
+    Activo BOOLEAN DEFAULT TRUE,
+    FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE ObraSocial (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(150) NOT NULL,
+    Codigo VARCHAR(50) UNIQUE,
+    Activo BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE Paciente (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Apellido VARCHAR(100) NOT NULL,
+    Documento VARCHAR(20) UNIQUE,
+    FechaNacimiento DATE,
+    Genero VARCHAR(20),
+    GrupoSanguineo VARCHAR(5),
+    Telefono VARCHAR(30),
+    Email VARCHAR(150),
+    Direccion VARCHAR(200),
+    FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE CoberturaPaciente (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    PacienteId INT NOT NULL,
+    ObraSocialId INT NOT NULL,
+    NumeroAfiliado VARCHAR(50) NULL,
+    Plan VARCHAR(50) NULL,
+    Titular VARCHAR(50) NULL,
+    VigenteDesde DATE NULL,
+    VigenteHasta DATE NULL,
+    CONSTRAINT FK_Cobertura_Paciente
+        FOREIGN KEY (PacienteId) REFERENCES Paciente(Id),
+    CONSTRAINT FK_Cobertura_ObraSocial
+        FOREIGN KEY (ObraSocialId) REFERENCES ObraSocial(Id)
+);
+
+CREATE TABLE AntecedenteMedico (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    PacienteId INT NOT NULL,
+    Descripcion VARCHAR(500) NOT NULL,
+    FechaRegistro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_AntecedenteMedico_Paciente
+        FOREIGN KEY (PacienteId) REFERENCES Paciente(Id)
+);
+
+CREATE TABLE Alergia (
+    AlergiaId INT AUTO_INCREMENT PRIMARY KEY,
+    PacienteId INT NOT NULL,
+    Descripcion VARCHAR(300) NOT NULL,
+    Gravedad VARCHAR(30) NULL,
+    FechaRegistro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_Alergia_Paciente
+        FOREIGN KEY (PacienteId) REFERENCES Paciente(Id)
+);
