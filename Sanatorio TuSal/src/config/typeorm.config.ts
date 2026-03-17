@@ -13,5 +13,10 @@ export const typeOrmConfig = (configService: ConfigService): TypeOrmModuleOption
   autoLoadEntities: true,
 
   charset: 'utf8mb4',
-  timezone: 'Z'
+  timezone: 'Z',
+
+   connectTimeout: 20000,
+  extra: {
+    connectionLimit: 10,
+  }
 })
