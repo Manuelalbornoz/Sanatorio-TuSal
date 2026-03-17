@@ -1,21 +1,6 @@
 version: '3.8'
 
 services:
-  db:
-    image: mysql:8.0
-    container_name: sanatorio_db
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: SanatorioTuSal
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: root
-    ports:
-      - "3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
-      - ./doc/BD:/docker-entrypoint-initdb.d
-
   backend:
     build: .
     container_name: sanatorio_backend
@@ -23,13 +8,8 @@ services:
     ports:
       - "3000:3000"
     environment:
-      MYSQL_HOST: db
+      MYSQL_HOST: host.docker.internal
       MYSQL_PORT: 3306
       MYSQL_USER: admin
       MYSQL_PASSWORD: root
       MYSQL_DB: SanatorioTuSal
-    depends_on:
-      - db
-
-volumes:
-  db_data:
